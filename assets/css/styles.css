@@ -1,0 +1,224 @@
+:root {
+    --background-body: #ffffff;
+    --logo: url("../img/nav-icon-red.svg");
+    --icon-first: url("../img/moon-black.svg");
+    --icon-second: url("../img/bag-black.svg");
+    --icon-third: url("../img/dashboard-black.svg");
+    --logo-color-text: #262626;
+    --header-background-figure: #e94959;
+    --header-color-title: #262626;
+    --header-color-paragraph: #8c8c8c;
+    --header-color-price: #e94959;
+    --header-background-button: #2b2b2b;
+    --header-color-button: #ffffff;
+    --header-background-counter: #262626;
+    --header-color-counter: #e6e6e6;
+    --color-link-home: #e94959;
+    --color-link-product: #262626;
+    --header-background-nav: #ffffff;
+}  
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+html {
+    font-size: 62.5%;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-body);
+}
+body.darkmode {
+    --background-body: #1f1d2a;
+    --logo: url("../img/nav-icon-dark.svg");
+    --icon-first: url("../img/sun-dark.svg");
+    --icon-second: url("../img/bag-dark.svg");
+    --icon-third: url("../img/dashboard-dark.svg");
+    --header-background-figure: #9adde0;
+    --header-color-title: #f2f2f2;
+    --logo-color-text: #f2f2f2;
+    --header-color-price: #9adde0;
+    --header-background-button: #1b1a23;
+    --header-color-button: #fff;
+    --header-background-counter: #f2f2f2;
+    --header-color-counter: #0b0b0f;
+    --color-link-home: #9adde0;
+    --color-link-product: #f2f2f2;
+    --header-background-nav: #1b1a23;
+}
+.header {
+    min-width: 32rem;
+    width: 100%;
+    max-width: 110rem;
+    height: 70rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, minmax(min-content, max-content));
+    margin: 0 auto;
+}
+.header .header__nav {
+    min-width: 32rem;
+    width: 100%;
+    max-width: 110rem;
+    padding: 1rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+    position: fixed;
+    background-color: transparent;
+    transition: background-color 0.5s;
+}
+/* Cuando el scroll es mayor a 300 */
+.header .header__nav--scroll {
+    background-color: var(--header-background-nav);
+}
+.header .header__nav .nav__ul--first .header__li--normal {
+    display: flex; 
+    align-items: center;
+}
+.header .header__nav .nav__ul--first .header__li--normal :first-of-type {
+    background-image: var(--logo);
+    background-position: center;
+    background-size: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 4rem;
+    height: 4rem;
+}
+.header .header__nav .nav__ul--first .header__li--normal :last-of-type {
+    width: 5rem;
+    text-decoration: none;
+    color: var(--logo-color-text);
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(1) a {
+    background-image: var(--icon-first);
+    background-position: center;
+    background-size: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 6rem;
+    height: 6rem;
+}
+.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(2) a {
+    background-image: var(--icon-second);
+    background-position: center;
+    background-size: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 6rem;
+    height: 6rem;
+}
+.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(3) a {
+    background-image: var(--icon-third);
+    background-position: center;
+    background-size: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 6rem;
+    height: 6rem;
+}
+.header .header__nav .nav__ul--third {
+    display: flex;
+    gap: 1.5rem;
+    position: relative;
+}
+.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(n) a{
+    width: 2rem;
+    height: 2rem;
+}
+.header .header__nav .nav__ul--third .header__li--normal a {
+    width: 2rem;
+    height: 2rem;
+}
+.header .header__ul--counter {
+    position: absolute;
+    background-color: var(--header-background-counter);
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--header-color-counter);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    left: 4rem;
+    top: 1rem;
+}
+.header .header__figure {
+    width: 100%;
+    height: 40rem;
+    background: var(--header-background-figure);
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header .header__figure img {
+    width: 80%;
+    max-width: 31rem;
+}
+.header .header__section {
+    width: 100%;
+    padding: 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / 4;
+    grid-row: 3 / 5;
+    gap: 2rem;
+}
+.header .header__section .header__section--h1 {
+    font-size: 3.2rem;
+    line-height: 4.2rem;
+    font-weight: 600;
+    color: var(--header-color-title);
+}
+.header .header__section .header__section--p:first-of-type {
+    font-size: 1.6rem;
+    color: var(--header-color-paragraph);
+    line-height: 2rem;
+}
+.header .header__section .header__section--p:last-of-type {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--header-color-price);
+}
+.header .header__section .header__section--a {
+    background-color: var(--header-background-button);
+    display: inline-block;
+    width: 15rem;
+    height: 5rem;   
+    font-size: 2rem;
+    text-decoration: none;
+    color: var(--header-color-button);
+    text-align: center;
+    padding: 1.5rem;
+}
+.main {
+    height: 100vh;
+}
+.header .header__nav .header__nav--ul .header__li--dark {
+    display: none;
+}
+.header .header__nav .nav__ul--second {
+    display: none;
+}
+
+/*  Pruebas para el eccoemrce con los diferentes productos */
+
+.main .main__section--second {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    width: 100%;
+    max-width: 110rem;
+}
+.main .main__section--second figure img {
+    width: 10rem;
+}
