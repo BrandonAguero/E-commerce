@@ -62,6 +62,9 @@ async function getData() {
 
 /* Overcroll Dinámico */
 const headerNav = document.querySelector(".header__div");
+const weHere = document.querySelector(".we--here");
+const hereProducts = document.querySelector(".products");
+const hereHome = document.querySelector(".home");
 
 function animationScroll() {
     let y = window.scrollY;
@@ -70,7 +73,17 @@ function animationScroll() {
     } else {
         headerNav.classList.remove("header__nav--scroll");
     }
+    console.log(y);
+    if (y > 680) {
+        weHere.classList.remove("we--here");
+        hereProducts.classList.add("we--here");
+    } else {
+        hereHome.classList.add("we--here");
+        hereProducts.classList.remove("we--here");
+    }
 }
+
+
 window.onscroll = () => animationScroll();
 
 /* Dark Mode */
