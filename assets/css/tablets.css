@@ -1,4 +1,4 @@
-.header .header__nav .header__nav--div {
+.header .header__nav .header__nav--div .header__div--div {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -9,16 +9,18 @@
     display: flex;
     gap: 2rem;
 }
-.header .header__nav .header__nav--div .nav__ul--second li a{
+.header .header__nav  .header__div--div .nav__ul--second li a{
     text-decoration: none;
     font-size: 1.4rem;
     font-weight: 400;
 }
-.header .header__nav .header__nav--div .nav__ul--second li:first-of-type a {
+.header .header__nav .header__div--div .nav__ul--second li:first-of-type a {
     color: var(--color-link-home);
+    font-weight: 500;
 }
-.header .header__nav .header__nav--div .nav__ul--second li:last-of-type a {
+.header .header__nav .header__div--div .nav__ul--second li:last-of-type a {
     color: var(--color-link-product);
+    font-weight: 500;
 }
 .header .header__section {
     grid-column: 1 / 2;
@@ -35,4 +37,9 @@
 }
 .header .header__nav .nav__ul--third .header__li--normal:nth-of-type(3) {
     display: none;
+}
+.main .main__section--first {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    max-width: 55rem;
 }
