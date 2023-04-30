@@ -27,7 +27,15 @@
     --main-color-divadd: #262626;
     --main-background-divadd-activate: #e94959;
     --main-color-divadd-activate: #f7f7f8;
-
+    --footer-background: #e6e6e6;
+    --footer-color-a: #595959;
+    --footer-color-titles: #262626;
+    --footer-facebook: url("../img/facebook.svg");
+    --footer-twitter: url("../img/twitter.svg");
+    --footer-instagram: url("../img/instagram.svg");
+    --footer-facebook-hover: url("../img/facebook-hover.svg");
+    --footer-twitter-hover: url("../img/twitter-hover.svg");
+    --footer-instagram-hover: url("../img/instagram-hover.svg");
 }  
 * {
     box-sizing: border-box;
@@ -67,6 +75,7 @@ body.darkmode {
     --main-color-divadd: #f2f2f2;
     --main-background-divadd-activate: #9adde0;
     --main-color-divadd-activate: #1f1d2a;
+
 }
 .header {
     min-width: 32rem;
@@ -256,6 +265,7 @@ body.darkmode {
 .main {
     height: max-content;
     min-width: 32rem;
+    padding-bottom: 8rem;
 }
 .main .main__section--first {
     width: 80%;
@@ -388,3 +398,66 @@ body.darkmode {
 .main .main__section--first .main__div--target p:last-of-type {
     color: #fff;
 }
+.footer {
+    background-color: var(--footer-background);
+    padding: 6rem 0rem;
+}
+.footer .footer__div {
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 3rem;
+}
+.footer .footer__div .footer__div--section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.footer .footer__div .footer__div--section h4{
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--footer-color-titles);
+}
+.footer .footer__div .footer__div--section ul li {
+    margin-bottom: 1rem;
+}
+.footer .footer__div .footer__div--section ul li a{
+    text-decoration: none;
+    color: var(--footer-color-a);
+    font-size: 1.5rem;
+}
+.footer .footer__div .footer__div--section ul li:hover a {
+    color: var(--footer-color-titles);
+}
+.footer .footer__div .footer__div--section:nth-of-type(4) ul {
+    display: flex;
+    gap: 1rem;
+}
+.footer .footer__div .footer__div--section:nth-of-type(4) ul li a {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    width: 3rem;
+    height: 3rem;
+}
+.footer .footer__div .footer__div--section:nth-of-type(4) ul li:nth-of-type(1) a{
+    background-image: var(--footer-facebook);
+
+}
+.footer .footer__div .footer__div--section:nth-of-type(4) ul li:nth-of-type(2) a {
+    background-image: var(--footer-twitter);
+}
+.footer .footer__div .footer__div--section:nth-of-type(4) ul li:nth-of-type(3) a {
+    background-image: var(--footer-instagram);
+}
+.footer .footer__div .footer__div--section:nth-of-type(4) ul li:nth-of-type(1):hover a {
+    background-image: var(--footer-facebook-hover);
+}
+.footer .footer__div .footer__div--section:nth-of-type(4) ul li:nth-of-type(2):hover a {
+    background-image: var(--footer-twitter-hover);
+}
+.footer .footer__div .footer__div--section:nth-of-type(4) ul li:nth-of-type(3):hover a {
+    background-image: var(--footer-instagram-hover);
+}  
