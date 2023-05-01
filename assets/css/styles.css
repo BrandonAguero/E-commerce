@@ -488,7 +488,12 @@ body.darkmode {
     color: var(--header-color-button);
 }
 
-.loanding--page {
+.container--div {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-body);
+}
+.container--div .loanding--page {
     background-image: var(--logo);
     background-position: center;
     background-size: contain;
