@@ -75,7 +75,15 @@ body.darkmode {
     --main-color-divadd: #f2f2f2;
     --main-background-divadd-activate: #9adde0;
     --main-color-divadd-activate: #1f1d2a;
-
+    --footer-background: #0b0b0f;
+    --footer-color-titles: #f2f2f2;
+    --footer-color-a: #bfbfbf;
+    --footer-facebook: url("../img/facebook-dark.svg");
+    --footer-twitter: url("../img/twitter-dark.svg");
+    --footer-instagram: url("../img/instagram-dark.svg");
+    --footer-facebook-hover: url("../img/facebook-dark-hover.svg");
+    --footer-twitter-hover: url("../img/twitter-dark-hover.svg");
+    --footer-instagram-hover: url("../img/instagram-dark-hover.svg");
 }
 .header {
     min-width: 32rem;
@@ -461,3 +469,43 @@ body.darkmode {
 .footer .footer__div .footer__div--section:nth-of-type(4) ul li:nth-of-type(3):hover a {
     background-image: var(--footer-instagram-hover);
 }  
+.footer .footer__div--info {
+    background-color: var(--header-background-figure);
+    width: 95%;
+    margin: 0 auto;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10rem;
+}
+.footer .footer__div--info p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.footer .footer__div--info p a {
+    text-decoration: none;
+    color: var(--header-color-button);
+}
+
+.loanding--page {
+    background-image: var(--logo);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 20rem;
+    height: 20rem;
+    position: absolute;
+    top: calc(50% - 13rem);
+    left: calc(50% - 11rem);
+    animation: loanding 1s ease-in-out infinite;
+}
+@keyframes loanding {
+    from {
+        transform: translate(0rem, -1rem);
+    }
+    to {
+        transform: translate(0rem, 1rem);
+    }
+}
