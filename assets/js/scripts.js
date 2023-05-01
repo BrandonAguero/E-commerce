@@ -53,6 +53,7 @@ async function getData() {
         span.textContent = `Stock: ${data.quantity}`;
         const p = document.createElement("p");
         p.textContent = `${data.name}`;
+        p.classList.add("product--name")
         figure.appendChild(img);
         h4.appendChild(span);
         divInfo.append(h4, p, divAdd);
@@ -117,6 +118,7 @@ async function getData() {
                     span.textContent = `Stock: ${data.quantity}`;
                     const p = document.createElement("p");
                     p.textContent = `${data.name}`;
+                    p.classList.add("product--name")
                     figure.appendChild(img);
                     h4.appendChild(span);
                     divInfo.append(h4, p, divAdd);
@@ -149,6 +151,7 @@ async function getData() {
                         span.textContent = `Stock: ${data.quantity}`;
                         const p = document.createElement("p");
                         p.textContent = `${data.name}`;
+                        p.classList.add("product--name")
                         figure.appendChild(img);
                         h4.appendChild(span);
                         divInfo.append(h4, p, divAdd);
@@ -156,8 +159,6 @@ async function getData() {
                         mainSectionProducts.append(article);
                     }
                 }
-/*                 mainSectionProducts.style.transition = "opacity 1s ease-in-out";
-                mainSectionProducts.style.opacity = "0"; */
             } else if (currentDivThree & currentTarget) {
                 div.removeEventListener("click", filterProductsDiv);
                 let articlesRemove = document.querySelectorAll(".section__article");
@@ -184,6 +185,7 @@ async function getData() {
                         span.textContent = `Stock: ${data.quantity}`;
                         const p = document.createElement("p");
                         p.textContent = `${data.name}`;
+                        p.classList.add("product--name")
                         figure.appendChild(img);
                         h4.appendChild(span);
                         divInfo.append(h4, p, divAdd);
@@ -217,6 +219,7 @@ async function getData() {
                         span.textContent = `Stock: ${data.quantity}`;
                         const p = document.createElement("p");
                         p.textContent = `${data.name}`;
+                        p.classList.add("product--name")
                         figure.appendChild(img);
                         h4.appendChild(span);
                         divInfo.append(h4, p, divAdd);
@@ -224,13 +227,130 @@ async function getData() {
                         mainSectionProducts.append(article);
                     }
                 }
+
             } else {
                 div.addEventListener("click", filterProductsDiv);
+
             }
         })
-    }
+
+        const productInfo = document.querySelectorAll(".product--name");
+        productInfo.forEach((p) => {
+            p.addEventListener("click", showProductInfo);
+        });
+    
+        function showProductInfo(e) {
+            if (e.target) {
+                for (const data of dataObject.products) {
+                    if (data.name === e.target.textContent) {
+                        const articleDetails = document.createElement("article");
+                        articleDetails.classList.add("article--details");
+                        const closeArticleDetails = document.createElement("div");
+                        closeArticleDetails.classList.add("article__details--close");
+                        closeArticleDetails.innerHTML = "&times;";
+                        const figureDetails = document.createElement("figure");
+                        figureDetails.classList.add("article__details--figure");
+                        const img = document.createElement("img");
+                        img.setAttribute("src", `${data.image}`)
+                        const divContainerInfo = document.createElement("div");
+                        divContainerInfo.classList.add("article__details--container");
+                        const h3 = document.createElement("h3");
+                        h3.textContent = `$${data.name} - ${data.category}`;
+                        h3.classList.add("product__details--name");
+                        const p = document.createElement("p");
+                        p.textContent = `${data.description}`;
+                        const divPriceStock = document.createElement("div");
+                        divPriceStock.classList.add("details__container--pristock");
+                        const divPrice = document.createElement("h4");
+                        divPrice.textContent = `$${data.price}.00`
+                        divPrice.classList.add("details__container--price");
+                        const divAdd = document.createElement("div");
+                        divAdd.classList.add("details__container--divadd");
+                        divAdd.textContent = "+";
+                        const divStock = document.createElement("p")
+                        divStock.textContent = `stock: ${data.quantity}`
+                        divStock.classList.add("details__container--stock");
+                        figureDetails.appendChild(img);
+                        divPrice.append(divAdd);
+                        divPriceStock.append(divPrice, divStock);
+                        divContainerInfo.append(h3, p, divPriceStock);
+                        articleDetails.append(figureDetails, divContainerInfo, closeArticleDetails);
+                        mainSectionProducts.appendChild(articleDetails);
+                        break
+                    };
+                };
+            };
+            const iconClose = document.querySelector(".article__details--close");
+            const articleDetails = document.querySelector(".article--details");
+            console.log(iconClose);
+            iconClose.addEventListener("click", closeArticleDetails);
+        
+            function closeArticleDetails() {
+                articleDetails.remove();
+            }
+        };
+    };
+    const productInfo = document.querySelectorAll(".product--name");
+    productInfo.forEach((p) => {
+        p.addEventListener("click", showProductInfo);
+    });
+    function showProductInfo(e) {
+        if (e.target) {
+            for (const data of dataObject.products) {
+                if (data.name === e.target.textContent) {
+                    const articleDetails = document.createElement("article");
+                    articleDetails.classList.add("article--details");
+                    const closeArticleDetails = document.createElement("div");
+                    closeArticleDetails.classList.add("article__details--close");
+                    closeArticleDetails.innerHTML = "&times;";
+                    const figureDetails = document.createElement("figure");
+                    figureDetails.classList.add("article__details--figure");
+                    const img = document.createElement("img");
+                    img.setAttribute("src", `${data.image}`)
+                    const divContainerInfo = document.createElement("div");
+                    divContainerInfo.classList.add("article__details--container");
+                    const h3 = document.createElement("h3");
+                    h3.textContent = `$${data.name} - ${data.category}`;
+                    h3.classList.add("product__details--name");
+                    const p = document.createElement("p");
+                    p.textContent = `${data.description}`;
+                    const divPriceStock = document.createElement("div");
+                    divPriceStock.classList.add("details__container--pristock");
+                    const divPrice = document.createElement("h4");
+                    divPrice.textContent = `$${data.price}.00`
+                    divPrice.classList.add("details__container--price");
+                    const divAdd = document.createElement("div");
+                    divAdd.classList.add("details__container--divadd");
+                    divAdd.textContent = "+";
+                    const divStock = document.createElement("p")
+                    divStock.textContent = `stock: ${data.quantity}`
+                    divStock.classList.add("details__container--stock");
+                    figureDetails.appendChild(img);
+                    divPrice.append(divAdd);
+                    divPriceStock.append(divPrice, divStock);
+                    divContainerInfo.append(h3, p, divPriceStock);
+                    articleDetails.append(figureDetails, divContainerInfo, closeArticleDetails);
+                    mainSectionProducts.appendChild(articleDetails);
+                    break
+                };
+            };
+        };
+        const iconClose = document.querySelector(".article__details--close");
+        const articleDetails = document.querySelector(".article--details");
+        console.log(iconClose);
+        iconClose.addEventListener("click", closeArticleDetails);
+    
+        function closeArticleDetails() {
+
+            articleDetails.remove();
+        }
+    };
+    
+
+
 
 })();
+
 
 /* Overcroll Dinámico */
 const headerNav = document.querySelector(".header__div");
@@ -269,4 +389,3 @@ convertDarkMode.forEach((item) => {
 function darkMode() {
     body.classList.toggle("darkmode");
 }
-
