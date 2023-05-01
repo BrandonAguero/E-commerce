@@ -488,24 +488,3 @@ body.darkmode {
     color: var(--header-color-button);
 }
 
-.loanding--page {
-    background-image: var(--logo);
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    display: inline-block;
-    width: 20rem;
-    height: 20rem;
-    position: absolute;
-    top: calc(50% - 13rem);
-    left: calc(50% - 11rem);
-    animation: loanding 1s ease-in-out infinite;
-}
-@keyframes loanding {
-    from {
-        transform: translate(0rem, -1rem);
-    }
-    to {
-        transform: translate(0rem, 1rem);
-    }
-}

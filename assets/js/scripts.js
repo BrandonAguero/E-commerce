@@ -118,11 +118,3 @@ function moveDivTarget(e) {
         e.target.parentNode.classList.add("main__div--target");
     }
 }
-
-/* loanding image */
-
-window.onload = () => {
-    let img = document.querySelector(".loanding--page")
-    img.style.visibility = "hidden";
-    img.style.opacity = "0";
-}
