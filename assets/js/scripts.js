@@ -354,9 +354,9 @@ async function getData() {
 
 /* Overcroll Dinámico */
 const headerNav = document.querySelector(".header__div");
-const weHere = document.querySelector(".we--here");
-const hereProducts = document.querySelector(".products");
-const hereHome = document.querySelector(".home");
+const weHere = document.querySelectorAll(".we--here");
+const hereProducts = document.querySelectorAll(".products");
+const hereHome = document.querySelectorAll(".home");
 
 function animationScroll() {
     let y = window.scrollY;
@@ -366,11 +366,19 @@ function animationScroll() {
         headerNav.classList.remove("header__nav--scroll");
     }
     if (y > 680) {
-        weHere.classList.remove("we--here");
-        hereProducts.classList.add("we--here");
+        weHere.forEach((here) => {
+            here.classList.remove("we--here");
+        })
+        hereProducts.forEach((here) => {
+            here.classList.add("we--here");
+        })
     } else {
-        hereHome.classList.add("we--here");
-        hereProducts.classList.remove("we--here");
+        hereHome.forEach((here) => {
+            here.classList.add("we--here");
+        })
+        hereProducts.forEach((here) => {
+            here.classList.remove("we--here");
+        })
     }
 }
 
@@ -388,4 +396,21 @@ convertDarkMode.forEach((item) => {
 
 function darkMode() {
     body.classList.toggle("darkmode");
+}
+
+const openDash = document.querySelector(".dashboard--open");
+const dashboard = document.querySelector(".header__dashboard--close");
+openDash.addEventListener("click", openDashBoard);
+
+function openDashBoard() {
+    if (openDash.classList.contains("dashboard--open")) {
+        openDash.classList.remove("dashboard--open");
+        openDash.classList.add("dashboard--close");
+        dashboard.classList.add("header__dashboard--open");
+    } else {
+        openDash.classList.remove("dashboard--close");
+        openDash.classList.add("dashboard--open");
+        dashboard.classList.remove("header__dashboard--open");
+    }
+
 }

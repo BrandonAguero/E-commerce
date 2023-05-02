@@ -12,14 +12,17 @@
 .header .header__nav  .header__div--div .nav__ul--second li a{
     text-decoration: none;
     font-size: 1.4rem;
-    font-weight: 400;
-}
-.header .header__nav .header__div--div .nav__ul--second li a {
     font-weight: 500;
     color: var(--color-link);
 }
 .header .header__nav .header__div--div .nav__ul--second li .we--here {
     color: var(--color-link-here);
+}
+.header .header__dashboard--close {
+    display: none;
+}
+.header .header__dashboard--open {
+    display: none;
 }
 .header .header__section {
     grid-column: 1 / 2;

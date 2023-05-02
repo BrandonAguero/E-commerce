@@ -4,6 +4,7 @@
     --icon-first: url("../img/moon-black.svg");
     --icon-second: url("../img/bag-black.svg");
     --icon-third: url("../img/dashboard-black.svg");
+    --icon-close: url("../img/close-black.svg");
     --logo-color-text: #262626;
     --header-background-figure: #e94959;
     --header-color-title: #262626;
@@ -39,6 +40,7 @@
     --main-background-detail: #ffffff;
     --main-background-addproduct: #2b2b2b;
     --main-background-closedetails: #000000;
+    /* cambiar  */
 }  
 * {
     box-sizing: border-box;
@@ -57,6 +59,7 @@ body.darkmode {
     --icon-first: url("../img/sun-dark.svg");
     --icon-second: url("../img/bag-dark.svg");
     --icon-third: url("../img/dashboard-dark.svg");
+    --icon-close: url("../img/close-dark.svg");
     --header-background-figure: #9adde0;
     --header-color-title: #f2f2f2;
     --logo-color-text: #f2f2f2;
@@ -152,45 +155,66 @@ body.darkmode {
 .header .header__nav .nav__ul--third .header__li--normal {
     cursor: pointer;
 }
-.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(1) span {
+.header .header__nav .nav__ul--third .header__li--normal span {
+    background-position: center;
+    background-size: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+}
+.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(1) .moon--sun {
     background-image: var(--icon-first);
-    background-position: center;
-    background-size: center;
-    background-repeat: no-repeat;
-    display: inline-block;
-    width: 6rem;
-    height: 6rem;
 }
-.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(2) span {
+.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(2) .bag--color {
     background-image: var(--icon-second);
-    background-position: center;
-    background-size: center;
-    background-repeat: no-repeat;
-    display: inline-block;
-    width: 6rem;
-    height: 6rem;
+    z-index: 20;
 }
-.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(3) span {
+.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(3) .dashboard--open{
     background-image: var(--icon-third);
-    background-position: center;
-    background-size: center;
-    background-repeat: no-repeat;
-    display: inline-block;
-    width: 6rem;
-    height: 6rem;
+}
+.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(3) .dashboard--close {
+    background-image: var(--icon-close);
+    z-index: 20;
+}
+
+/* Qui estoy ahora! adfkljajsñdlkfjalsdkfjñaklsdjfñlkajdsñkajdñflkjalñdfk*/
+.header .header__dashboard--ul li a {
+    text-decoration: none;
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: var(--color-link);
+}
+.header .header__dashboard--ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    position: relative;
+    top: calc(50% - 12rem);
+}
+.header .header__dashboard--ul li .we--here {
+    color: var(--color-link-here);
+}
+.header .header__dashboard--close {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-body);
+    position: absolute;
+    top: 0;
+    left: 100%;
+    display: flex;
+    justify-content: center;
+    transition: transform .4s ease-in-out;
+}
+.header .header__dashboard--open {
+    transform: translate(-100%);
 }
 .header .header__nav .nav__ul--third {
     display: flex;
     gap: 1.5rem;
     position: relative;
-}
-.header .header__nav .nav__ul--third .header__li--normal:nth-of-type(n) span{
-    width: 2rem;
-    height: 2rem;
-}
-.header .header__nav .nav__ul--third .header__li--normal span {
-    width: 2rem;
-    height: 2rem;
 }
 .header .header__ul--counter {
     position: absolute;
@@ -206,6 +230,7 @@ body.darkmode {
     border-radius: 50%;
     left: 4rem;
     top: 1rem;
+    z-index: 20;
 }
 .header .header__div--second {
     width: 100%;
@@ -428,7 +453,7 @@ body.darkmode {
     height: max-content;
     margin: 0 auto;
     position: fixed;
-    top: calc(50% - 30rem);
+    top: calc(50% - 23.3rem);
     z-index: 1000;
     background-color: var(--main-background-detail);
     box-shadow: 0rem 0.4rem 0.8rem 100rem rgba(0, 0, 0, 0.397);
@@ -450,7 +475,7 @@ body.darkmode {
     padding-top: 2rem;
 }
 .main .main__section--second .article--details figure img {
-    width: 90%;
+    width: 83%;
 }
 .main .main__section--second .article--details .article__details--container {
     display: flex;
