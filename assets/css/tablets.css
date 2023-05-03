@@ -40,6 +40,9 @@
 .header .header__nav .nav__ul--third .header__li--normal:nth-of-type(3) {
     display: none;
 }
+.header .header__cart--close {
+    width: 40rem;
+}
 .main .main__section--first {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1fr;

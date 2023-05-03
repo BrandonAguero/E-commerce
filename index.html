@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="./assets/css/styles.css">
         <link rel="stylesheet" href="./assets/css/tablets.css" media="(min-width: 700px)">
         <link rel="stylesheet" href="./assets/css/desktops.css" media="(min-width: 1000px)">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="./assets/js/scripts.js" defer></script>
     </head>
     <body>
@@ -30,17 +31,30 @@
                     </div>
                     <ul class="header__nav--ul nav__ul--third">
                         <li class="header__li--normal convert--darkmode"><span class="moon--sun"></span></li>
-                        <li class="header__li--normal " ><span class="bag--color"></span></li>
-                        <li class="header__li--normal" ><span class="dashboard--open"></span></li>
+                        <li class="header__li--normal " ><span class="bag--close"></span></li>
+                        <li class="header__li--normal" ><span class="dashboard--close"></span></li>
                         <div class="header__ul--counter">0</div>
                     </ul>
                 </nav>
-                <div class="header__dashboard--close">
+                <section class="header__dashboard--close">
                     <ul class="header__dashboard--ul">
                         <li><a class="home we--here" href="#home">Home</a></li>
                         <li><a class="products" href="#products">Products</a></li>
                     </ul>
-                </div>
+                </section>
+                <section class="header__cart--close">
+                    <span class="bag--close"></span>
+                    <section class="diferents--products">
+
+                    </section>
+                    <section class="products--pay">
+                        <div class="quantity--price">
+                            <p>14 items</p>
+                            <h2>$332.00</h2>
+                        </div>
+                        <a class="btn--comprar" href="#">Comprar</a>
+                    </section>
+                </section>
             </div>
             <div class="header__div header__div--second">
                 <figure class="header__figure">
@@ -60,6 +74,9 @@
                 </section>
             </div>
         </header>
+        <div class="loanding">
+            <span></span>
+        </div>
         <main class="main" id="products">
             <section class="main__section main__section--first">
                 <div class="main__section--div section__div--one main__div--target">

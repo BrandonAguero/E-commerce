@@ -238,6 +238,17 @@ async function getData() {
         productInfo.forEach((p) => {
             p.addEventListener("click", showProductInfo);
         });
+
+        //! Agregar productos al carrito AQUI!!!! 
+        const divAddArticle = document.querySelectorAll(".article__div--add");
+
+        divAddArticle.forEach((div) => {
+            div.addEventListener("click", addProductCartArticle);
+        });
+
+        function addProductCartArticle () {
+            console.log("Te escucho!");
+        };
     
         function showProductInfo(e) {
             if (e.target) {
@@ -266,6 +277,7 @@ async function getData() {
                         divPrice.classList.add("details__container--price");
                         const divAdd = document.createElement("div");
                         divAdd.classList.add("details__container--divadd");
+                        divAdd.classList.add("div--add");
                         divAdd.textContent = "+";
                         const divStock = document.createElement("p")
                         divStock.textContent = `stock: ${data.quantity}`
@@ -280,15 +292,25 @@ async function getData() {
                     };
                 };
             };
+
+            //! Agregar productos al carrito AQUI!!!
             const iconClose = document.querySelector(".article__details--close");
             const articleDetails = document.querySelector(".article--details");
-            console.log(iconClose);
+            const divAddDetails = document.querySelector(".details__container--divadd");
+    
             iconClose.addEventListener("click", closeArticleDetails);
-        
+            divAddDetails.addEventListener("click", addProductCartDetails);
+    
             function closeArticleDetails() {
                 articleDetails.remove();
             }
+        
+            function addProductCartDetails() {
+                console.log("Te escucho!");
+            };
         };
+    
+
     };
     const productInfo = document.querySelectorAll(".product--name");
     productInfo.forEach((p) => {
@@ -335,21 +357,149 @@ async function getData() {
                 };
             };
         };
+
         const iconClose = document.querySelector(".article__details--close");
         const articleDetails = document.querySelector(".article--details");
-        console.log(iconClose);
-        iconClose.addEventListener("click", closeArticleDetails);
-    
-        function closeArticleDetails() {
+        const divAddDetails = document.querySelector(".details__container--divadd");
 
+        iconClose.addEventListener("click", closeArticleDetails);
+        divAddDetails.addEventListener("click", addProductCartDetails);
+
+        function closeArticleDetails() {
             articleDetails.remove();
         }
-    };
     
+        function addProductCartDetails() {
+            console.log("Te escucho!");
+        };
+    };
 
+    
+    //! Agregar productos al carrito AQUI!!!!
+    const divAddArticle = document.querySelectorAll(".article__div--add");
+    const containerProducts = document.querySelector(".diferents--products");
+
+
+    divAddArticle.forEach((div) => {
+        div.addEventListener("click", countProductCartArticle);
+    });
+
+    let counterProducts = [];
+
+    function countProductCartArticle(e) {
+        if (e.target) {
+            const productName = e.target.previousElementSibling;
+            if (counterProducts.length === 0) {
+                for (const product of dataObject.products) {
+                    if (product.name === productName.textContent) {
+                        product.quantity--;
+                        counterProducts.push(product);
+                        break;
+                    };
+                };
+            } else {
+                let find = false;
+                for (let i = 0; i < counterProducts.length; i++) {
+                    if (counterProducts[i].name === productName.textContent) {
+                        if (counterProducts[i].quantity > 0) {
+                            counterProducts[i].quantity--;
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...No tenemos más stock',
+                                text: `${counterProducts[i].name}`,
+                            })
+                        } 
+                        const article = document.createElement("article");
+                        article.classList.add("header__cart--product")
+                        const figure = document.createElement("figure");
+                        const img = document.createElement("img");
+                        img.setAttribute("src", counterProducts[i].image);
+                        const div = document.createElement("div");
+                        div.classList.add("product--details");
+                        const h3 = document.createElement("h3");
+                        h3.textContent = `${counterProducts[i].name}`;
+                        const pStock = document.createElement("p");
+                        pStock.textContent = `Stock: ${counterProducts[i].quantity} | `;
+                        const spanPrice = document.createElement("span");
+                        spanPrice.textContent = `$${counterProducts[i].price}`;
+                        const pSubTotal = document.createElement("p");
+                        pSubTotal.textContent = `Subtotal:`
+                        const pAddDel = document.createElement("p");
+                        const spanSubtract = document.createElement("span");
+                        spanSubtract.classList.add("subtract--product");
+                        const spanQuantity = document.createElement("span");
+                        spanQuantity.textContent = `2 Units`;
+                        spanQuantity.classList.add("quantity--products");
+                        spanQuantity.products
+                        const spanPlus = document.createElement("span");
+                        spanPlus.classList.add("plus--product");
+                        const spanTrash = document.createElement("span");
+                        spanTrash.classList.add("trash--product");
+                        pAddDel.append(spanSubtract, spanQuantity, spanPlus, spanTrash);
+                        pStock.appendChild(spanPrice);
+                        div.append(h3, pStock, pSubTotal, pAddDel);
+                        figure.appendChild(img);
+                        article.append(figure, div);
+                        containerProducts.appendChild(article); 
+                        find = true;
+                        break;
+                    }
+                }
+                if (!find) {
+                    for (const product of dataObject.products) {
+                        if (product.name === productName.textContent) {
+                            product.quantity--;
+                            counterProducts.push(product);
+                            break;
+                        };
+                    };
+                }
+            }
+            console.log(counterProducts);
+        };
+
+
+    };
 
 
 })();
+
+
+//! Important
+
+/*                 const article = document.createElement("article");
+                article.classList.add("header__cart--product")
+                const figure = document.createElement("figure");
+                const img = document.createElement("img");
+                img.setAttribute("src", onlyProduct.image);
+                const div = document.createElement("div");
+                div.classList.add("product--details");
+                const h3 = document.createElement("h3");
+                h3.textContent = `${onlyProduct.name}`;
+                const pStock = document.createElement("p");
+                pStock.textContent = `Stock: ${onlyProduct.quantity} | `;
+                const spanPrice = document.createElement("span");
+                spanPrice.textContent = `$${onlyProduct.price}`;
+                const pSubTotal = document.createElement("p");
+                const pAddDel = document.createElement("p");
+                const spanSubtract = document.createElement("span");
+                spanSubtract.classList.add("subtract--product");
+                const spanQuantity = document.createElement("span");
+                spanQuantity.classList.add("quantity--products");
+                spanQuantity.products
+                const spanPlus = document.createElement("span");
+                spanPlus.classList.add("plus--product");
+                const spanTrash = document.createElement("span");
+                spanTrash.classList.add("trash--product");
+                pAddDel.append(spanSubtract, spanQuantity, spanPlus, spanTrash);
+                pStock.appendChild(spanPrice);
+                div.append(h3, pStock, pSubTotal, pAddDel);
+                figure.appendChild(img);
+                article.append(figure, div);
+                containerProducts.appendChild(article); */
+//! Important
+
 
 
 /* Overcroll Dinámico */
@@ -398,19 +548,38 @@ function darkMode() {
     body.classList.toggle("darkmode");
 }
 
-const openDash = document.querySelector(".dashboard--open");
+const openDash = document.querySelector(".dashboard--close");
 const dashboard = document.querySelector(".header__dashboard--close");
 openDash.addEventListener("click", openDashBoard);
 
 function openDashBoard() {
-    if (openDash.classList.contains("dashboard--open")) {
-        openDash.classList.remove("dashboard--open");
-        openDash.classList.add("dashboard--close");
-        dashboard.classList.add("header__dashboard--open");
-    } else {
+    if (openDash.classList.contains("dashboard--close")) {
         openDash.classList.remove("dashboard--close");
         openDash.classList.add("dashboard--open");
+        dashboard.classList.add("header__dashboard--open");
+    } else {
+        openDash.classList.remove("dashboard--open");
+        openDash.classList.add("dashboard--close");
         dashboard.classList.remove("header__dashboard--open");
     }
 
 }
+
+const openCart = document.querySelectorAll(".bag--close");
+const cart = document.querySelector(".header__cart--close");
+
+
+openCart.forEach((div) => {
+    div.addEventListener("click", openCartProducts);
+})
+
+function openCartProducts() {
+    cart.classList.toggle("header__cart--open");
+}
+
+window.addEventListener("load", function() {
+    setTimeout(() => {
+        const contentloanding = document.querySelector(".loanding");
+        contentloanding.classList.add("loanding--none");
+    }, 3000)
+})
