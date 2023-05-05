@@ -10,11 +10,12 @@ async function getData() {
 }
 
 (async () => {
-    const dataObject = {
+    const dataObjectOriginal = {
         products: JSON.parse(window.localStorage.getItem("data")) || (await getData()),
         cart: {},
     };
-    console.log(dataObject.products);
+    let dataObject = structuredClone(dataObjectOriginal);
+    console.log(dataObject);
     //* Contador de los productos disponibles
     (() => {
         const amountShirt = document.querySelector(".counter--shirt");
@@ -32,6 +33,7 @@ async function getData() {
         amountHoddie.textContent = `${counterHoddie} products`;
         amountSweater.textContent = `${counterSweater} products`;
     })();
+
 
     //* Inserción de todos los productos
     const mainSectionProducts = document.querySelector(".main__section--second");
@@ -376,131 +378,329 @@ async function getData() {
 
     
     //! Agregar productos al carrito AQUI!!!!
-    const divAddArticle = document.querySelectorAll(".article__div--add");
-    const containerProducts = document.querySelector(".diferents--products");
 
 
-    divAddArticle.forEach((div) => {
-        div.addEventListener("click", countProductCartArticle);
-    });
+    function main() {
 
-    let counterProducts = [];
+        const divAddArticle = document.querySelectorAll(".article__div--add");
+        const containerProducts = document.querySelector(".diferents--products");
 
-    function countProductCartArticle(e) {
-        if (e.target) {
-            const productName = e.target.previousElementSibling;
-            if (counterProducts.length === 0) {
-                for (const product of dataObject.products) {
-                    if (product.name === productName.textContent) {
-                        product.quantity--;
-                        counterProducts.push(product);
-                        break;
-                    };
-                };
-            } else {
-                let find = false;
-                for (let i = 0; i < counterProducts.length; i++) {
-                    if (counterProducts[i].name === productName.textContent) {
-                        if (counterProducts[i].quantity > 0) {
-                            counterProducts[i].quantity--;
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...No tenemos más stock',
-                                text: `${counterProducts[i].name}`,
-                            })
-                        } 
-                        const article = document.createElement("article");
-                        article.classList.add("header__cart--product")
-                        const figure = document.createElement("figure");
-                        const img = document.createElement("img");
-                        img.setAttribute("src", counterProducts[i].image);
-                        const div = document.createElement("div");
-                        div.classList.add("product--details");
-                        const h3 = document.createElement("h3");
-                        h3.textContent = `${counterProducts[i].name}`;
-                        const pStock = document.createElement("p");
-                        pStock.textContent = `Stock: ${counterProducts[i].quantity} | `;
-                        const spanPrice = document.createElement("span");
-                        spanPrice.textContent = `$${counterProducts[i].price}`;
-                        const pSubTotal = document.createElement("p");
-                        pSubTotal.textContent = `Subtotal:`
-                        const pAddDel = document.createElement("p");
-                        const spanSubtract = document.createElement("span");
-                        spanSubtract.classList.add("subtract--product");
-                        const spanQuantity = document.createElement("span");
-                        spanQuantity.textContent = `2 Units`;
-                        spanQuantity.classList.add("quantity--products");
-                        spanQuantity.products
-                        const spanPlus = document.createElement("span");
-                        spanPlus.classList.add("plus--product");
-                        const spanTrash = document.createElement("span");
-                        spanTrash.classList.add("trash--product");
-                        pAddDel.append(spanSubtract, spanQuantity, spanPlus, spanTrash);
-                        pStock.appendChild(spanPrice);
-                        div.append(h3, pStock, pSubTotal, pAddDel);
-                        figure.appendChild(img);
-                        article.append(figure, div);
-                        containerProducts.appendChild(article); 
-                        find = true;
-                        break;
-                    }
-                }
-                if (!find) {
+        divAddArticle.forEach((div) => {
+            div.addEventListener("click", countProductCartArticle);
+        });
+    
+        
+        let counterProducts = [];
+    
+        function countProductCartArticle(e) {
+            console.log(e.target, "soy yo el clickeado");
+            if (e.target) {
+                const productName = e.target.previousElementSibling;
+                if (counterProducts.length === 0) {
                     for (const product of dataObject.products) {
                         if (product.name === productName.textContent) {
                             product.quantity--;
+                            product.itemsBuy = 1;
                             counterProducts.push(product);
+                            const article = document.createElement("article");
+                            article.classList.add("header__cart--product")
+                            const figure = document.createElement("figure");
+                            const img = document.createElement("img");
+                            img.setAttribute("src", product.image);
+                            const div = document.createElement("div");
+                            div.classList.add("product--details");
+                            const h3 = document.createElement("h3");
+                            h3.textContent = `${product.name}`;
+                            const pStock = document.createElement("p");
+                            pStock.classList.add("product--available");
+                            pStock.textContent = `Stock: ${product.quantity} | `;
+                            const spanPrice = document.createElement("span");
+                            spanPrice.classList.add("product__price--sure");
+                            spanPrice.textContent = `$${product.price}.00`;
+                            const pSubTotal = document.createElement("p");
+                            pSubTotal.classList.add("subtotal--products");
+                            let itemsBuy = product.itemsBuy;
+                            pSubTotal.textContent = `Subtotal: $${itemsBuy * product.price}.00`
+                            const pAddDel = document.createElement("p");
+                            const spanSubtract = document.createElement("span");
+                            spanSubtract.classList.add("subtract--product");
+                            const spanQuantity = document.createElement("span");
+                            spanQuantity.textContent = `${itemsBuy} ${itemsBuy === 1 ? "Unit" : "Units"}`;
+                            spanQuantity.classList.add("quantity--products");
+                            const spanPlus = document.createElement("span");
+                            spanPlus.classList.add("plus--product");
+                            const spanTrash = document.createElement("span");
+                            spanTrash.classList.add("trash--product");
+                            const quantityItems = document.querySelector(".quantity__price--items");
+                            quantityItems.textContent = `${product.itemsBuy}`
+                            pAddDel.append(spanSubtract, spanQuantity, spanPlus, spanTrash);
+                            pStock.appendChild(spanPrice);
+                            div.append(h3, pStock, pSubTotal, pAddDel);
+                            figure.appendChild(img);
+                            article.append(figure, div);
+                            containerProducts.appendChild(article); 
                             break;
                         };
-                    };
+                    };         
+
+                } else {
+                    let find = false;
+                    for (let i = 0; i < counterProducts.length; i++) {
+                        console.log(counterProducts[i].name);
+                        if (counterProducts[i].name === productName.textContent) {
+                            if (counterProducts[i].quantity > 0) {
+                                counterProducts[i].itemsBuy++;
+                                counterProducts[i].quantity--;
+                                const subtotalProducts = document.querySelectorAll(".subtotal--products");
+                                const ultimateSubtotal = subtotalProducts[i];
+                                console.log(ultimateSubtotal);
+                                const itemsBuy = document.querySelectorAll(".quantity--products");
+                                const ultimateItemBuy = itemsBuy[i];
+                                console.log(ultimateItemBuy)
+                                const itemsAvailable = document.querySelectorAll(".product--available");
+                                const ultimateAvailable = itemsAvailable[i];
+                                console.log(ultimateAvailable);
+                                const spanPrice = document.createElement("span");
+                                ultimateAvailable.textContent = `Stock: ${counterProducts[i].quantity} | `;
+                                spanPrice.textContent = `$${counterProducts[i].price}.00`;
+                                ultimateAvailable.append(spanPrice);
+                                ultimateSubtotal.textContent = `Subtotal: $${counterProducts[i].itemsBuy * counterProducts[i].price}.00`
+                                ultimateItemBuy.textContent = `${counterProducts[i].itemsBuy} ${counterProducts[i].itemsBuy === 1 ? "Unit" : "Units"}`
+                                find = true;
+                                break
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...No tenemos más stock',
+                                    text: `${counterProducts[i].name}`,
+                                })
+                                find = true;
+                                break
+                            }
+                        }
+                    }
+                    if (!find) {
+                        for (const product of dataObject.products) {
+                            if (product.name === productName.textContent) {
+                                product.quantity--;
+                                product.itemsBuy = 1;
+                                counterProducts.push(product);
+                                const article = document.createElement("article");
+                                article.classList.add("header__cart--product")
+                                const figure = document.createElement("figure");
+                                const img = document.createElement("img");
+                                img.setAttribute("src", product.image);
+                                const div = document.createElement("div");
+                                div.classList.add("product--details");
+                                const h3 = document.createElement("h3");
+                                h3.textContent = `${product.name}`;
+                                const pStock = document.createElement("p");
+                                pStock.classList.add("product--available");
+                                pStock.textContent = `Stock: ${product.quantity} | `;
+                                const spanPrice = document.createElement("span");
+                                spanPrice.textContent = `$${product.price}.00`;
+                                const pSubTotal = document.createElement("p");
+                                pSubTotal.classList.add("subtotal--products");
+                                let itemsBuy = product.itemsBuy;
+                                pSubTotal.textContent = `Subtotal: $${itemsBuy * product.price}.00`
+                                const pAddDel = document.createElement("p");
+                                const spanSubtract = document.createElement("span");
+                                spanSubtract.classList.add("subtract--product");
+                                const spanQuantity = document.createElement("span");
+                                spanQuantity.textContent = `${itemsBuy} ${itemsBuy === 1 ? "Unit" : "Units"}`;
+                                spanQuantity.classList.add("quantity--products");
+                                const spanPlus = document.createElement("span");
+                                spanPlus.classList.add("plus--product");
+                                const spanTrash = document.createElement("span");
+                                spanTrash.classList.add("trash--product");
+                                const quantityItems = document.querySelector(".quantity__price--items");
+                                quantityItems.textContent = `${product.itemsBuy}`
+                                pAddDel.append(spanSubtract, spanQuantity, spanPlus, spanTrash);
+                                pStock.appendChild(spanPrice);
+                                div.append(h3, pStock, pSubTotal, pAddDel);
+                                figure.appendChild(img);
+                                article.append(figure, div);
+                                containerProducts.appendChild(article);
+                                break;
+                            };
+                        };
+                    }
+/*                     let find = true;
+                    if (find) {
+                        for (let i = 0; i < counterProducts.length; i++) {
+                            console.log(counterProducts[i].name);
+                            if (counterProducts[i].name === productName.textContent) {
+                                if (counterProducts[i].quantity > 0) {
+                                    counterProducts[i].itemsBuy++;
+                                    counterProducts[i].quantity--;
+                                    const subtotalProducts = document.querySelectorAll(".subtotal--products");
+                                    const ultimateSubtotal = subtotalProducts[i];
+                                    console.log(ultimateSubtotal);
+                                    const itemsBuy = document.querySelectorAll(".quantity--products");
+                                    const ultimateItemBuy = itemsBuy[i];
+                                    console.log(ultimateItemBuy)
+                                    const itemsAvailable = document.querySelectorAll(".product--available");
+                                    const ultimateAvailable = itemsAvailable[i];
+                                    console.log(ultimateAvailable);
+                                    const spanPrice = document.createElement("span");
+                                    ultimateAvailable.textContent = `Stock: ${counterProducts[i].quantity} | `;
+                                    spanPrice.textContent = `$${counterProducts[i].price}.00`;
+                                    ultimateAvailable.append(spanPrice);
+                                    ultimateSubtotal.textContent = `Subtotal: $${counterProducts[i].itemsBuy * counterProducts[i].price}.00`
+                                    ultimateItemBuy.textContent = `${counterProducts[i].itemsBuy} ${counterProducts[i].itemsBuy === 1 ? "Unit" : "Units"}`
+                                    find = false;
+                                    break
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...No tenemos más stock',
+                                        text: `${counterProducts[i].name}`,
+                                    })
+                                    find = false;
+                                    break
+                                } 
+                            }
+                        }
+                    } else {
+                        for (const product of dataObject.products) {
+                            if (product.name === productName.textContent) {
+                                product.quantity--;
+                                product.itemsBuy = 1;
+                                counterProducts.push(product);
+                                const article = document.createElement("article");
+                                article.classList.add("header__cart--product")
+                                const figure = document.createElement("figure");
+                                const img = document.createElement("img");
+                                img.setAttribute("src", product.image);
+                                const div = document.createElement("div");
+                                div.classList.add("product--details");
+                                const h3 = document.createElement("h3");
+                                h3.textContent = `${product.name}`;
+                                const pStock = document.createElement("p");
+                                pStock.classList.add("product--available");
+                                pStock.textContent = `Stock: ${product.quantity} | `;
+                                const spanPrice = document.createElement("span");
+                                spanPrice.textContent = `$${product.price}.00`;
+                                const pSubTotal = document.createElement("p");
+                                pSubTotal.classList.add("subtotal--products");
+                                let itemsBuy = product.itemsBuy;
+                                pSubTotal.textContent = `Subtotal: $${itemsBuy * product.price}.00`
+                                const pAddDel = document.createElement("p");
+                                const spanSubtract = document.createElement("span");
+                                spanSubtract.classList.add("subtract--product");
+                                const spanQuantity = document.createElement("span");
+                                spanQuantity.textContent = `${itemsBuy} ${itemsBuy === 1 ? "Unit" : "Units"}`;
+                                spanQuantity.classList.add("quantity--products");
+                                const spanPlus = document.createElement("span");
+                                spanPlus.classList.add("plus--product");
+                                const spanTrash = document.createElement("span");
+                                spanTrash.classList.add("trash--product");
+                                const quantityItems = document.querySelector(".quantity__price--items");
+                                quantityItems.textContent = `${product.itemsBuy}`
+                                pAddDel.append(spanSubtract, spanQuantity, spanPlus, spanTrash);
+                                pStock.appendChild(spanPrice);
+                                div.append(h3, pStock, pSubTotal, pAddDel);
+                                figure.appendChild(img);
+                                article.append(figure, div);
+                                containerProducts.appendChild(article); 
+                                break;
+                            };
+                        };
+                    } */
                 }
+    
+                console.log(counterProducts);
+                /* Eliminar total de productos */
+            };
+
+
+            /* Eliminando un nuevo producto! */
+            let trashProduct = document.querySelector(".trash--product");
+            trashProduct.addEventListener("click", trashCartProduct);
+
+            function trashCartProduct(e) {
+                console.log(e.currentTarget)
             }
-            console.log(counterProducts);
+
+            const counterMain = document.querySelector(".header__ul--counter");
+            const quantityPriceItems = document.querySelector(".quantity__price--items");
+            const quantityPriceAll = document.querySelector(".quantity__price--allprice");
+            let counterUnits = 0;
+            let counterPriceAll = 0;
+            for (const all of counterProducts) {
+                counterUnits += all.itemsBuy;
+                counterPriceAll += all.itemsBuy * all.price;
+            };
+            quantityPriceItems.textContent = `${counterUnits} ${counterUnits === 1 ? "item" : "items"}`;
+            quantityPriceAll.textContent = `$${counterPriceAll}.00`;
+            counterMain.textContent = `${counterUnits}`;
+    
         };
 
+        
 
-    };
 
+
+
+    }
+
+    main();
+
+
+
+    
 
 })();
 
 
-//! Important
+/* const trashAllProducts = document.querySelectorAll(".trash--product");
 
-/*                 const article = document.createElement("article");
-                article.classList.add("header__cart--product")
-                const figure = document.createElement("figure");
-                const img = document.createElement("img");
-                img.setAttribute("src", onlyProduct.image);
-                const div = document.createElement("div");
-                div.classList.add("product--details");
-                const h3 = document.createElement("h3");
-                h3.textContent = `${onlyProduct.name}`;
-                const pStock = document.createElement("p");
-                pStock.textContent = `Stock: ${onlyProduct.quantity} | `;
-                const spanPrice = document.createElement("span");
-                spanPrice.textContent = `$${onlyProduct.price}`;
-                const pSubTotal = document.createElement("p");
-                const pAddDel = document.createElement("p");
-                const spanSubtract = document.createElement("span");
-                spanSubtract.classList.add("subtract--product");
-                const spanQuantity = document.createElement("span");
-                spanQuantity.classList.add("quantity--products");
-                spanQuantity.products
-                const spanPlus = document.createElement("span");
-                spanPlus.classList.add("plus--product");
-                const spanTrash = document.createElement("span");
-                spanTrash.classList.add("trash--product");
-                pAddDel.append(spanSubtract, spanQuantity, spanPlus, spanTrash);
-                pStock.appendChild(spanPrice);
-                div.append(h3, pStock, pSubTotal, pAddDel);
-                figure.appendChild(img);
-                article.append(figure, div);
-                containerProducts.appendChild(article); */
-//! Important
+trashAllProducts.forEach((trash) => {
+    trash.addEventListener("click", trashProduct);
+})
 
+function trashProduct(e) {
+    if (e.target) {
+        console.log("Estoy en e.target")
+        let nameProductRemove = e.target.parentNode.parentNode.firstChild.textContent;
+        let articleRemove = e.target.parentNode.parentNode.parentNode;
+        for (let i = 0; i < counterProducts.length; i++) {
+            if (counterProducts[i].name === nameProductRemove) {
+                if (confirm("Seguro que lo quieres eliminar 😩")) {
+                    for (const product of dataObjectOriginal.products) {
+                        if (product.name === nameProductRemove) {
+                            console.log(product.quantity);
+                            counterProducts[i].quantity = product.quantity;
+                            counterProducts[i].itemsBuy = 0;
+                            articleRemove.remove();
+                            break
+                        };
+                    };
+                    counterProducts.splice(i, 1);
+                }
+                else {
+                    break
+                }
+            };
+        };
+    };
+    console.log("Trash Products", counterProducts);
 
+                
+    const counterMain = document.querySelector(".header__ul--counter");
+    const quantityPriceItems = document.querySelector(".quantity__price--items");
+    const quantityPriceAll = document.querySelector(".quantity__price--allprice");
+    let counterUnits = 0;
+    let counterPriceAll = 0;
+    for (const all of counterProducts) {
+        counterUnits += all.itemsBuy;
+        counterPriceAll += all.itemsBuy * all.price;
+    };
+    quantityPriceItems.textContent = `${counterUnits} ${counterUnits === 1 ? "item" : "items"}`;
+    quantityPriceAll.textContent = `$${counterPriceAll}.00`;
+    counterMain.textContent = `${counterUnits}`;
+}
+ */
 
 /* Overcroll Dinámico */
 const headerNav = document.querySelector(".header__div");
