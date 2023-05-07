@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="./assets/css/tablets.css" media="(min-width: 700px)">
         <link rel="stylesheet" href="./assets/css/desktops.css" media="(min-width: 1000px)">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js" integrity="sha512-nKZDK+ztK6Ug+2B6DZx+QtgeyAmo9YThZob8O3xgjqhw2IVQdAITFasl/jqbyDwclMkLXFOZRiytnUrXk/PM6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="./assets/js/scripts.js" defer></script>
     </head>
     <body>
@@ -42,7 +43,7 @@
                         <li><a class="products" href="#products">Products</a></li>
                     </ul>
                 </section>
-                <section class="header__cart--close">
+                <section class="header__cart--close header--cart">
                     <span class="bag--close"></span>
                     <section class="diferents--products">
 
@@ -52,7 +53,7 @@
                             <p class="quantity__price--items">0 items</p>
                             <h2 class="quantity__price--allprice">$0.00</h2>
                         </div>
-                        <a class="btn--comprar" href="#">Comprar</a>
+                        <button class="btn--comprar" type="submit">Comprar<button/>
                     </section>
                 </section>
             </div>
@@ -79,22 +80,22 @@
         </div>
         <main class="main" id="products">
             <section class="main__section main__section--first">
-                <div class="main__section--div section__div--one main__div--target">
+                <button data-filter="all" class="main__section--div section__div--one main__div--target">
                     <p>Show all</p>
                     <p>Show all products</p>
-                </div>
-                <div class="main__section--div section__div--two">
+                </button>
+                <button data-filter=".shirt" class="main__section--div section__div--two">
                     <p>Shirt</p>
                     <p class="counter--shirt"></p>
-                </div>
-                <div class="main__section--div section__div--three">
+                </button>
+                <button data-filter=".hoddie" class="main__section--div section__div--three">
                     <p>Hoddie</p>
                     <p class="counter--hoddie"></p>
-                </div>
-                <div class="main__section--div section__div--four">
+                </button>
+                <button data-filter=".sweater" class="main__section--div section__div--four">
                     <p>Sweater</p>
                     <p class="counter--sweater"></p>
-                </div>
+                </button>
             </section>
             <section class="main__section main__section--second">
             </section>

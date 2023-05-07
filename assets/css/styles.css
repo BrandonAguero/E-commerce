@@ -201,7 +201,7 @@ body.darkmode {
     gap: 2rem;
     align-items: center;
     position: relative;
-    top: calc(50% - 12rem);
+    top: calc(50% - 5rem);
 }
 .header .header__dashboard--ul li .we--here {
     color: var(--color-link-here);
@@ -377,8 +377,11 @@ body.darkmode {
     text-align: center;
     margin:  0 auto;
     transition: background-color 0.5s ease-in-out;
+    border: none;
 }
-
+button {
+    display: none;
+}
 .header .header__cart--close .products--pay .btn--comprar:hover {
     background-color: var(--background-btnpay-activate);
 }
@@ -534,6 +537,8 @@ body.darkmode {
     width: 12rem;
     height: 5rem;
     transition: background-color .6s;
+    background: none;
+    border: none;
 }
 .main .main__section--first .main__section--div:hover {
     background-color: var(--main-background-box);
