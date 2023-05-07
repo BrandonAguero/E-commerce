@@ -13,10 +13,10 @@
     text-decoration: none;
     font-size: 1.4rem;
     font-weight: 500;
-    color: var(--color-link);
+    color: var(--color-text-main);
 }
 .header .header__nav .header__div--div .nav__ul--second li .we--here {
-    color: var(--color-link-here);
+    color: var(--second-color);
 }
 .header .header__dashboard--close {
     display: none;

@@ -110,31 +110,51 @@ function whereAreWeNow() {
 
 function darkModeConversion() {
     const body = document.querySelector("body");
+    const moon = document.querySelector(".moon--sun");
+    const bag = document.querySelector(".bag--close");
+    const counter = document.querySelector(".header__ul--counter");
+    const dash = document.querySelector(".dashboard");
     const convertDarkMode = document.querySelectorAll(".convert--darkmode");
-    
+
     convertDarkMode.forEach((item) => {
         item.addEventListener("click", darkMode);
     });
 
     function darkMode() {
-        body.classList.toggle("darkmode");
-    }
-}
+        if (!body.classList.contains("darkmode")) {
+            body.classList.add("darkmode");
+            moon.classList.add("moon--sun--dark");
+            bag.classList.add("bag--close--dark");
+            counter.classList.add("header__ul--counter--dark")
+            dash.classList.add("dashboard--dark");
+        } else {
+            body.classList.remove("darkmode");
+            moon.classList.remove("moon--sun--dark");
+            bag.classList.remove("bag--close--dark");
+            counter.classList.remove("header__ul--counter--dark")
+            dash.classList.remove("dashboard--dark");
+        }
+        if (body.classList.contains("darkmode")) {
+            localStorage.setItem("darkMode", "true");
+        } else {
+            localStorage.setItem("darkMode", "false");
+        };
+    };
+    
+};
 
 function openCloseDashBoard() {
-    const openDash = document.querySelector(".dashboard--close");
-    const dashboard = document.querySelector(".header__dashboard--close");
-    openDash.addEventListener("click", dashBoard);
+    const iconDash = document.querySelector(".dashboard");
+    const closeDash = document.querySelector(".header__dashboard--close");
+    iconDash.addEventListener("click", dashBoard);
 
     function dashBoard() {
-        if (openDash.classList.contains("dashboard--close")) {
-            openDash.classList.remove("dashboard--close");
-            openDash.classList.add("dashboard--open");
-            dashboard.classList.add("header__dashboard--open");
+        if (iconDash.classList.contains("dashboard--close")) {
+            closeDash.classList.remove("header__dashboard--open");
+            iconDash.classList.remove("dashboard--close");
         } else {
-            openDash.classList.remove("dashboard--open");
-            openDash.classList.add("dashboard--close");
-            dashboard.classList.remove("header__dashboard--open");
+            closeDash.classList.add("header__dashboard--open");
+            iconDash.classList.add("dashboard--close")
         }
     }
 }
@@ -152,7 +172,32 @@ function openCloseCart() {
     }
 }
 
+function verifyDarkMode() {
+    const body = document.querySelector("body");
+    const moon = document.querySelector(".moon--sun");
+    const bag = document.querySelector(".bag--close");
+    const counter = document.querySelector(".header__ul--counter");
+    const dash = document.querySelector(".dashboard");
+    if (JSON.parse(localStorage.getItem("darkMode"))) {
+        body.classList.add("darkmode");
+        moon.classList.add("moon--sun--dark");
+        bag.classList.add("bag--close--dark");
+        counter.classList.add("header__ul--counter--dark")
+        dash.classList.add("dashboard--dark");
+    } else {
+        body.classList.remove("darkmode");
+        moon.classList.remove("moon--sun--dark");
+        bag.classList.remove("bag--close--dark");
+        counter.classList.remove("header__ul--counter--dark")
+        dash.classList.remove("dashboard--dark");
+    };
+}
+
 window.addEventListener("load", async () => {
+    /* Preguntar porque no puedo agregarlo con la funcion convertDark Mode */
+    //! Importante
+    verifyDarkMode();
+
     //* Loanding Page
     setTimeout(() => {
         const contentloanding = document.querySelector(".loanding");
