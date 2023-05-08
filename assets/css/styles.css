@@ -630,7 +630,8 @@ button {
 
 /* Open details products */
 .main .main__section--second .article--details {
-    width: 30rem;
+    width: 31rem;
+    padding: 1rem;
     height: max-content;
     position: fixed;
     top: calc(50% - 23.3rem);
@@ -658,7 +659,7 @@ button {
 .main .main__section--second .article--details figure img {
     width: 83%;
 }
-.main .main__section--second .article--details .article__details--container {
+.main .main__section--second .article--details .article__ {
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -692,7 +693,7 @@ button {
     font-size: 1.5rem;
 }
 .main .main__section--second .article--details .article__details--container div h4 div {
-    background-color: var();
+    background-color: var(--background-boxes);
     width: 3rem;
     height: 3rem;
     border-radius: 50%;

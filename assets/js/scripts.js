@@ -27,7 +27,6 @@ function printProductsAvailableFilter(datos) {
 }
 
 function printDiferentsProducts(datos) {
-    console.log("Me ejecute")
     const mainSectionProducts = document.querySelector(".main__section--second");
 
     let  html = "";
@@ -323,11 +322,12 @@ function buyProducts(db) {
 
         updateLocalStorageCart("data", db.products);
         updateLocalStorageCart("cart", db.cart);
-
         printProductsAvailableFilter(db);
         printProductsCart(db);
         printProductsToPay(db);
         printDiferentsProducts(db);
+        addProductToCart(db, ".article__div--add");
+        showProductInfo(db);
     })
 }
 
@@ -339,7 +339,7 @@ function showProductInfo(db) {
             const productId = Number(name.nextElementSibling.id);
             let html = "";
             for (product of db.products) {
-                if (product.id === productId) {
+                if (product?.id === productId) {
                     html += `
                         <article class="article--details">
                             <figure class="article__details--figure">
@@ -372,15 +372,17 @@ function closeProductInfo() {
     const articleDetails = document.querySelector(".article--details");
     
     const iconClose = document.querySelector(".article__details--close");
-    iconClose.addEventListener("click", () => {
-        articleDetails.remove();
-    })
+    try {      
+        iconClose.addEventListener("click", () => {
+            articleDetails.remove();
+        })
+    } catch(error) {
+        return alert("Ya no tenemos este producto, lo sentimos");
+    }
 }
 
 
 window.addEventListener("load", async () => {
-    /* Preguntar porque no puedo agregarlo con la funcion convertDark Mode */
-    //! Importante
     verifyDarkMode();
 
     //* Loanding Page
@@ -393,6 +395,7 @@ window.addEventListener("load", async () => {
         products: JSON.parse(localStorage.getItem("data")) || (await getData()),
         cart: JSON.parse(localStorage.getItem("cart")) || {},
     };
+    printProductsToPay(dataObjectOriginal);
     printProductsAvailableFilter(dataObjectOriginal);
     printDiferentsProducts(dataObjectOriginal); 
     filterProductsCategory();
@@ -401,10 +404,10 @@ window.addEventListener("load", async () => {
     openCloseDashBoard();
     openCloseCart();
     printProductsCart(dataObjectOriginal);
+    showProductInfo(dataObjectOriginal);
     addProductToCart(dataObjectOriginal, ".article__div--add");
     handlersProducts(dataObjectOriginal);
     buyProducts(dataObjectOriginal);
-    showProductInfo(dataObjectOriginal);
 });
 
 
