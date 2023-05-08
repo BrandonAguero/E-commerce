@@ -39,6 +39,7 @@ function printDiferentsProducts(datos) {
         divInfo.classList.add("section__article--div");
         const divAdd = document.createElement("div");
         divAdd.classList.add("article__div--add");
+        divAdd.id = `${data.id}`;
         divAdd.textContent = "+";
         const h4 = document.createElement("h4");
         h4.textContent = `$${data.price}.00`;
@@ -193,6 +194,87 @@ function verifyDarkMode() {
     };
 }
 
+function updateLocalStorageCart(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+};
+
+function printProductsCart(db) {
+    containerProducts = document.querySelector(".diferents--products");
+    Object.values(db.cart).forEach((product) => {
+        console.log(product, "soy print product");
+        const article = document.createElement("article");
+        article.classList.add("header__cart--product")
+        const figure = document.createElement("figure");
+        const img = document.createElement("img");
+        img.setAttribute("src", product.image);
+        const div = document.createElement("div");
+        div.classList.add("product--details");
+        const h3 = document.createElement("h3");
+        h3.textContent = `${product.name}`;
+        const pStock = document.createElement("p");
+        pStock.classList.add("product--available");
+        pStock.textContent = `Stock: ${product  .quantity} | `;
+        const spanPrice = document.createElement("span");
+        spanPrice.classList.add("product__price--sure");
+        spanPrice.textContent = `$${product.price}.00`;
+        const pSubTotal = document.createElement("p");
+        pSubTotal.classList.add("subtotal--products");
+        let itemsBuy = product.itemsBuy;
+        pSubTotal.textContent = `Subtotal: $${itemsBuy * product.price}.00`
+        const pAddDel = document.createElement("p");
+        const spanSubtract = document.createElement("span");
+        spanSubtract.classList.add("subtract--product");
+        const spanQuantity = document.createElement("span");
+        spanQuantity.textContent = `${itemsBuy} ${itemsBuy === 1 ? "Unit" : "Units"}`;
+        spanQuantity.classList.add("quantity--products");
+        const spanPlus = document.createElement("span");
+        spanPlus.classList.add("plus--product");
+        const spanTrash = document.createElement("span");
+        spanTrash.classList.add("trash--product");
+        const quantityItems = document.querySelector(".quantity__price--items");
+        quantityItems.textContent = `${product.itemsBuy}`
+        pAddDel.append(spanSubtract, spanQuantity, spanPlus, spanTrash);
+        pStock.appendChild(spanPrice);
+        div.append(h3, pStock, pSubTotal, pAddDel);
+        figure.appendChild(img);
+        article.append(figure, div);
+        containerProducts.appendChild(article); 
+    })
+}
+
+function addProductToCartSimple(db) {
+    btnPlus = document.querySelectorAll(".article__div--add");
+    btnPlus.forEach((plus) => {
+        plus.addEventListener("click", addProductCart) 
+    })
+
+    function addProductCart(e) {
+        if (e.target.classList.contains("article__div--add")) {
+            const productId = Number(e.target.id);
+            console.log(productId, "Este es product Id!!!")
+            const productFind = db.products.find((product) => {
+                return product.id === productId;
+            })  
+            if (db.cart[productId]) {
+                if (db.cart[productId].itemsBuy === db.cart[productId].quantity) return alert("Ya no tenemos más stock");
+                db.cart[productId].itemsBuy += 1;
+            } else {
+                db.cart[productId] = structuredClone(productFind);
+                db.cart[productId].itemsBuy = 1;
+            }
+
+            console.log(db.cart, "soy el cart");
+
+            updateLocalStorageCart("cart", db.cart);
+    
+            printProductsCart(db);
+            console.log(db.cart, "Soy el segundo cart");
+        }
+
+    } 
+
+}
+
 window.addEventListener("load", async () => {
     /* Preguntar porque no puedo agregarlo con la funcion convertDark Mode */
     //! Importante
@@ -202,13 +284,12 @@ window.addEventListener("load", async () => {
     setTimeout(() => {
         const contentloanding = document.querySelector(".loanding");
         contentloanding.classList.add("loanding--none");
-    }, 3000)
+    }, 1000)
 
     const dataObjectOriginal = {
-        products: JSON.parse(window.localStorage.getItem("data")) || (await getData()),
-        cart: {},
+        products: JSON.parse(localStorage.getItem("data")) || (await getData()),
+        cart: JSON.parse(localStorage.getItem("cart")) || {},
     };
-    let dataObject = structuredClone(dataObjectOriginal);
 
     printProductsAvailableFilter(dataObjectOriginal);
     printDiferentsProducts(dataObjectOriginal); 
@@ -217,6 +298,8 @@ window.addEventListener("load", async () => {
     darkModeConversion();
     openCloseDashBoard();
     openCloseCart();
+
+    addProductToCartSimple(dataObjectOriginal);
 });
 
 
