@@ -27,39 +27,25 @@ function printProductsAvailableFilter(datos) {
 }
 
 function printDiferentsProducts(datos) {
+    console.log("Me ejecute")
     const mainSectionProducts = document.querySelector(".main__section--second");
-    for (const data of datos.products) {
-        const article = document.createElement("article");
-        article.classList.add("section__article", `${data.category}`);
-        const figure = document.createElement("figure");
-        figure.classList.add("section__article--figure");
-        const img = document.createElement("img");
-        img.setAttribute("src", `${data.image}`)
-        const divInfo = document.createElement("div");
-        divInfo.classList.add("section__article--div");
-        const divAdd = document.createElement("div");
-        if (data.quantity !== 0){
-            divAdd.classList.add("article__div--add");
-            divAdd.id = `${data.id}`;
-            divAdd.textContent = "+";
-        } 
-        const h4 = document.createElement("h4");
-        h4.textContent = `$${data.price}.00`;
-        const span = document.createElement("span");
-        span.textContent = `${data.quantity === 0 ? "Sold out" : `Stock: ${data.quantity}`}`;
-        if (data.quantity === 0) {
-            span.classList.add("sold--out");
-            divAdd.remove();
-        }
-        const p = document.createElement("p");
-        p.textContent = `${data.name}`;
-        p.classList.add("product--name")
-        figure.appendChild(img);
-        h4.appendChild(span);
-        divInfo.append(h4, p, divAdd);
-        article.append(figure, divInfo);
-        mainSectionProducts.append(article);
+
+    let  html = "";
+
+    for (const product of datos.products) {
+        html += `
+        <article class="section__article ${product.category}">
+            <figure class="section__article--figure" >
+                <img src="${product.image}">
+            </figure>
+            <div class="section__article--div">
+                <h4>$${product.price}.00 ${product.quantity === 0 ? `<span class="sold--out">Sold out</span>` : `<span>Stock: ${product.quantity}</span>`}</h4>
+                <p class="product--name">${product.name}</p>
+                ${product.quantity === 0 ? "<button></button>" : `<div class="article__div--add" id=${product.id}>+</div>`}
+            </div>
+        </article>`
     }
+    mainSectionProducts.innerHTML = html;
 }
 
 function filterProductsCategory() {
@@ -343,7 +329,6 @@ function buyProducts(db) {
         printProductsAvailableFilter(db);
         printProductsCart(db);
         printProductsToPay(db);
-        console.log("Soy el db despues de la compra!!!", db.products);
         printDiferentsProducts(db);
     })
 }
@@ -374,7 +359,6 @@ window.addEventListener("load", async () => {
     addProductToCartSimple(dataObjectOriginal);
     handlersProducts(dataObjectOriginal);
     buyProducts(dataObjectOriginal);
-
 });
 
 
