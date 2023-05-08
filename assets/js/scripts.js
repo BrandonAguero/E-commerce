@@ -58,15 +58,15 @@ function filterProductsCategory() {
             div.classList.remove("main__div--target");
         });
         e.currentTarget.classList.add("main__div--target");
-        mixitup(".main__section--second", {
-            selectors: {
-                target: '.section__article'
-            },
-            animation: {
-                duration: 200
-            }
-        });
     }
+    mixitup(".main__section--second", {
+        selectors: {
+            target: '.section__article'
+        },
+        animation: {
+            duration: 200
+        }
+    });
 }
 
 function whereAreWeNow() {
