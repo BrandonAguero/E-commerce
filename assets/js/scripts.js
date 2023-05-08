@@ -217,15 +217,14 @@ function printProductsCart(db) {
 }
 
 
-function addProductToCartSimple(db) {
-    btnPlus = document.querySelectorAll(".article__div--add");
+function addProductToCart(db, identify) {
+    btnPlus = document.querySelectorAll(identify);
     btnPlus.forEach((plus) => {
         plus.addEventListener("click", addProductCart) 
     })
 
     function addProductCart(e) {
         const productId = Number(e.target.id);
-        console.log(productId, "Este es product Id!!!")
         const productFind = db.products.find((product) => {
             return product.id === productId;
         })  
@@ -240,7 +239,6 @@ function addProductToCartSimple(db) {
         updateLocalStorageCart("cart", db.cart);
         printProductsCart(db);
     } 
-
 }
 
 function handlersProducts(db) {
@@ -333,6 +331,53 @@ function buyProducts(db) {
     })
 }
 
+function showProductInfo(db) {
+    const productName = document.querySelectorAll(".product--name");
+    productName.forEach((name) => {
+        name.addEventListener("click", () => {
+            const mainSection = document.querySelector(".main__section--second");
+            const productId = Number(name.nextElementSibling.id);
+            let html = "";
+            for (product of db.products) {
+                if (product.id === productId) {
+                    html += `
+                        <article class="article--details">
+                            <figure class="article__details--figure">
+                                <img src="${product.image}">
+                            </figure>
+                            <div class="article__details--container">
+                                <h3 class="product__details--name">${product.name} - ${product.category}</h3>
+                                <p>${product.description}</p>
+                                <div class="details__container--pristock">
+                                    <h4 class="details__container--price">
+                                        $${product.quantity}.00
+                                        <div class="details__container--divadd" id=${product.id}>+</div>
+                                    </h4>
+                                    <p class="details__container--stock">Stock: ${product.quantity}</p>
+                                </div>
+                            </div>
+                            <div class="article__details--close">×</div>
+                        </article>
+                    `;
+                };
+            };
+            mainSection.insertAdjacentHTML('beforeend', html);
+            addProductToCart(db, ".details__container--divadd")
+            closeProductInfo();
+        })
+    })
+}
+
+function closeProductInfo() {
+    const articleDetails = document.querySelector(".article--details");
+    
+    const iconClose = document.querySelector(".article__details--close");
+    iconClose.addEventListener("click", () => {
+        articleDetails.remove();
+    })
+}
+
+
 window.addEventListener("load", async () => {
     /* Preguntar porque no puedo agregarlo con la funcion convertDark Mode */
     //! Importante
@@ -356,9 +401,10 @@ window.addEventListener("load", async () => {
     openCloseDashBoard();
     openCloseCart();
     printProductsCart(dataObjectOriginal);
-    addProductToCartSimple(dataObjectOriginal);
+    addProductToCart(dataObjectOriginal, ".article__div--add");
     handlersProducts(dataObjectOriginal);
     buyProducts(dataObjectOriginal);
+    showProductInfo(dataObjectOriginal);
 });
 
 
