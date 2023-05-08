@@ -38,13 +38,19 @@ function printDiferentsProducts(datos) {
         const divInfo = document.createElement("div");
         divInfo.classList.add("section__article--div");
         const divAdd = document.createElement("div");
-        divAdd.classList.add("article__div--add");
-        divAdd.id = `${data.id}`;
-        divAdd.textContent = "+";
+        if (data.quantity !== 0){
+            divAdd.classList.add("article__div--add");
+            divAdd.id = `${data.id}`;
+            divAdd.textContent = "+";
+        } 
         const h4 = document.createElement("h4");
         h4.textContent = `$${data.price}.00`;
         const span = document.createElement("span");
-        span.textContent = `Stock: ${data.quantity}`;
+        span.textContent = `${data.quantity === 0 ? "Sold out" : `Stock: ${data.quantity}`}`;
+        if (data.quantity === 0) {
+            span.classList.add("sold--out");
+            divAdd.remove();
+        }
         const p = document.createElement("p");
         p.textContent = `${data.name}`;
         p.classList.add("product--name")
@@ -200,47 +206,30 @@ function updateLocalStorageCart(key, value) {
 
 function printProductsCart(db) {
     containerProducts = document.querySelector(".diferents--products");
+    let html = "";
     Object.values(db.cart).forEach((product) => {
-        console.log(product, "soy print product");
-        const article = document.createElement("article");
-        article.classList.add("header__cart--product")
-        const figure = document.createElement("figure");
-        const img = document.createElement("img");
-        img.setAttribute("src", product.image);
-        const div = document.createElement("div");
-        div.classList.add("product--details");
-        const h3 = document.createElement("h3");
-        h3.textContent = `${product.name}`;
-        const pStock = document.createElement("p");
-        pStock.classList.add("product--available");
-        pStock.textContent = `Stock: ${product  .quantity} | `;
-        const spanPrice = document.createElement("span");
-        spanPrice.classList.add("product__price--sure");
-        spanPrice.textContent = `$${product.price}.00`;
-        const pSubTotal = document.createElement("p");
-        pSubTotal.classList.add("subtotal--products");
-        let itemsBuy = product.itemsBuy;
-        pSubTotal.textContent = `Subtotal: $${itemsBuy * product.price}.00`
-        const pAddDel = document.createElement("p");
-        const spanSubtract = document.createElement("span");
-        spanSubtract.classList.add("subtract--product");
-        const spanQuantity = document.createElement("span");
-        spanQuantity.textContent = `${itemsBuy} ${itemsBuy === 1 ? "Unit" : "Units"}`;
-        spanQuantity.classList.add("quantity--products");
-        const spanPlus = document.createElement("span");
-        spanPlus.classList.add("plus--product");
-        const spanTrash = document.createElement("span");
-        spanTrash.classList.add("trash--product");
-        const quantityItems = document.querySelector(".quantity__price--items");
-        quantityItems.textContent = `${product.itemsBuy}`
-        pAddDel.append(spanSubtract, spanQuantity, spanPlus, spanTrash);
-        pStock.appendChild(spanPrice);
-        div.append(h3, pStock, pSubTotal, pAddDel);
-        figure.appendChild(img);
-        article.append(figure, div);
-        containerProducts.appendChild(article); 
+        html += `
+            <article class="header__cart--product">
+                <figure>
+                    <img src=${product.image} />
+                </figure>
+                <div class="product--details">
+                    <h3>${product.name}</h3>
+                    <p class="product--available">Stock: ${product.quantity} | <span>$${product.price}.00</span></p>
+                    <p class="subtotal--products">Subtotal: $${product.itemsBuy * product.price}.00</p>
+                    <p data-id="${product.id}">
+                        <span class="subtract--product"></span>
+                        <span class="quantity--products">${product.itemsBuy} ${product.itemsBuy === 1 ? "Unit" : "Units"}</span>
+                        <span class="plus--product"></span>
+                        <span class="trash--product"></span>
+                    </p> 
+                </div>
+            </article>
+        `
     })
+    containerProducts.innerHTML = html;
 }
+
 
 function addProductToCartSimple(db) {
     btnPlus = document.querySelectorAll(".article__div--add");
@@ -249,30 +238,114 @@ function addProductToCartSimple(db) {
     })
 
     function addProductCart(e) {
-        if (e.target.classList.contains("article__div--add")) {
-            const productId = Number(e.target.id);
-            console.log(productId, "Este es product Id!!!")
-            const productFind = db.products.find((product) => {
-                return product.id === productId;
-            })  
-            if (db.cart[productId]) {
-                if (db.cart[productId].itemsBuy === db.cart[productId].quantity) return alert("Ya no tenemos más stock");
-                db.cart[productId].itemsBuy += 1;
-            } else {
-                db.cart[productId] = structuredClone(productFind);
-                db.cart[productId].itemsBuy = 1;
-            }
-
-            console.log(db.cart, "soy el cart");
-
-            updateLocalStorageCart("cart", db.cart);
-    
-            printProductsCart(db);
-            console.log(db.cart, "Soy el segundo cart");
+        const productId = Number(e.target.id);
+        console.log(productId, "Este es product Id!!!")
+        const productFind = db.products.find((product) => {
+            return product.id === productId;
+        })  
+        if (db.cart[productId]) {
+            if (db.cart[productId].itemsBuy === db.cart[productId].quantity) return alert("Ya no tenemos más stock");
+            db.cart[productId].itemsBuy += 1;
+        } else {
+            db.cart[productId] = structuredClone(productFind);
+            db.cart[productId].itemsBuy = 1;
         }
-
+        printProductsToPay(db);
+        updateLocalStorageCart("cart", db.cart);
+        printProductsCart(db);
     } 
 
+}
+
+function handlersProducts(db) {
+    const diferentsProducts = document.querySelector(".diferents--products");
+
+    diferentsProducts.addEventListener("click", (e) => {
+        if (e.target.classList.contains("subtract--product")) {
+            const productId = Number(e.target.parentNode.dataset.id);
+            if (db.cart[productId].itemsBuy === 1) {
+                const response = confirm("De verdad quieres eliminar este producto?");
+                if (!response) return
+                delete db.cart[productId];
+            } else {
+                db.cart[productId].itemsBuy--;
+            }
+        } 
+        if (e.target.classList.contains("plus--product")) {
+            const productId = Number(e.target.parentNode.dataset.id);
+            if (db.cart[productId].itemsBuy === db.cart[productId].quantity) return alert("Ya no tenemos más stock!");
+            db.cart[productId].itemsBuy++;
+        } 
+        if (e.target.classList.contains("trash--product")) {
+            const productId = Number(e.target.parentNode.dataset.id);
+            const response = confirm("De verdad quieres eliminar este producto?");
+            if (!response) return
+            delete db.cart[productId];
+        }
+        printProductsCart(db);
+        updateLocalStorageCart("cart", db.cart);
+        printProductsToPay(db);
+    })
+}
+
+function printProductsToPay(db) {
+    const quantityPrice = document.querySelector(".quantity--price");
+    const productsToPay = document.querySelector(".header__ul--counter");
+    let productsPay = 0;
+    let priceTotal = 0;
+
+    Object.values(db.cart).forEach((product) => {
+        productsPay += product.itemsBuy;
+        priceTotal += product.itemsBuy * product.price;
+    });
+
+    const html = `
+    <p class="quantity__price--items">
+        ${productsPay} ${productsPay === 1 ? "item" : "items"}
+    </p>
+    <h2 class="quantity__price--allprice">
+        $${priceTotal}.00
+    </h2>
+    `
+    quantityPrice.innerHTML = html;
+    productsToPay.textContent = productsPay;
+}
+
+function buyProducts(db) {
+    btnBuy = document.querySelector(".btn--comprar");
+    btnBuy.addEventListener("click", () => {
+
+        if (!Object.values(db.cart).length) return alert("Felicidades compraste aire");
+
+        const response = confirm("Seguro que quieres hacer la compra?");
+        if (!response) return;
+
+        const newProducts = [];
+
+        for (const product of db.products) {
+            const productCart = db.cart[product.id];
+            if (product.id === productCart?.id) {
+                newProducts.push({
+                    ...product,
+                    quantity: product.quantity - productCart.itemsBuy
+                })
+            } else {
+                newProducts.push(product);
+            }
+        }
+        
+        db.products = newProducts;
+        db.cart = {};
+
+        updateLocalStorageCart("data", db.products);
+        updateLocalStorageCart("cart", db.cart);
+
+        printProductsAvailableFilter(db);
+        printProductsCart(db);
+        printProductsToPay(db);
+        console.log("Soy el db despues de la compra!!!", db.products);
+        printDiferentsProducts(db);
+    })
 }
 
 window.addEventListener("load", async () => {
@@ -290,7 +363,6 @@ window.addEventListener("load", async () => {
         products: JSON.parse(localStorage.getItem("data")) || (await getData()),
         cart: JSON.parse(localStorage.getItem("cart")) || {},
     };
-
     printProductsAvailableFilter(dataObjectOriginal);
     printDiferentsProducts(dataObjectOriginal); 
     filterProductsCategory();
@@ -298,8 +370,11 @@ window.addEventListener("load", async () => {
     darkModeConversion();
     openCloseDashBoard();
     openCloseCart();
-
+    printProductsCart(dataObjectOriginal);
     addProductToCartSimple(dataObjectOriginal);
+    handlersProducts(dataObjectOriginal);
+    buyProducts(dataObjectOriginal);
+
 });
 
 
