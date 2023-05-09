@@ -17,9 +17,9 @@ function printProductsAvailableFilter(datos) {
     let counterHoddie = 0;
     let counterSweater = 0;
     for (const data of datos.products) {
-        if (data.category === "shirt") counterShirt++;
-        if (data.category === "hoddie") counterHoddie++;
-        if (data.category === "sweater") counterSweater++;
+        if (data.category === "shirt" & data.quantity !== 0) counterShirt++;
+        if (data.category === "hoddie" & data.quantity !== 0) counterHoddie++;
+        if (data.category === "sweater" & data.quantity !== 0) counterSweater++;
     }
     amountShirt.textContent = `${counterShirt} products`;
     amountHoddie.textContent = `${counterHoddie} products`;
@@ -317,17 +317,16 @@ function buyProducts(db) {
             }
         }
         
+        
+
         db.products = newProducts;
         db.cart = {};
 
         updateLocalStorageCart("data", db.products);
         updateLocalStorageCart("cart", db.cart);
-        printProductsAvailableFilter(db);
-        printProductsCart(db);
-        printProductsToPay(db);
-        printDiferentsProducts(db);
-        addProductToCart(db, ".article__div--add");
-        showProductInfo(db);
+
+        window.location.reload();
+
     })
 }
 
